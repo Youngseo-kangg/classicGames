@@ -40,8 +40,21 @@ document.addEventListener('DOMContentLoaded', () => {
   alphabetInputButton.textContent = '입력하기';
   readHangmanInputWrapper.append(alphabetInputButton);
 
-  // TODO : 행맨 캐릭터 만들기
+  // TODO : 행맨 매달릴 부분 + 캐릭터 만들기
   let readHangmanDisplay = document.querySelector('#hangmanDisplay');
+  // * 매달릴 부분 만들기
+  let treeComponents = ['rope', 'branch', 'tree', 'ground'];
+  let tree = document.createElement('div');
+  tree.id = 'hangmanTree';
+  readHangmanDisplay.appendChild(tree);
+  let readTree = document.querySelector('#hangmanTree');
+  for (let i = 0; i < treeComponents.length; i++) {
+    let treePart = document.createElement('div');
+    treePart.id = treeComponents[i]; // id 지정
+    readTree.appendChild(treePart);
+  }
+
+  // * 캐릭터 만들기
   let hangmanBody = document.createElement('div');
   hangmanBody.classList.add('hangmanBody');
   readHangmanDisplay.appendChild(hangmanBody);
