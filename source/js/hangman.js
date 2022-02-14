@@ -1,6 +1,11 @@
 import '../css/reset.css';
 import '../css/hangman.css';
 
+const hangman = {};
+hangman.twoPlayerQuestion = []; // 질문들
+hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
+hangman.userGuess = []; // 유저가 입력한 내용
+
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
 document.addEventListener('DOMContentLoaded', () => {
   // TODO : 필요한 header, main, div 등 만들고 세팅
@@ -8,6 +13,23 @@ document.addEventListener('DOMContentLoaded', () => {
   let main = document.createElement('main');
   let footer = document.createElement('footer');
   document.body.append(header, main, footer);
+
+  // TODO : 처음 접속했을때 띄울 안내 article 만들고 세팅
+  let article = document.createElement('article'); // 시작버튼 누르기 전 창으로 작동할 태그
+  article.id = 'beforeStart';
+  let articleDiv = document.createElement('div');
+  articleDiv.id = 'beforeStartMsg';
+  let articleP = document.createElement('p');
+  articleP.textContent = '행맨 게임에 오신것을 환영합니다!';
+  let articleBtn = document.createElement('button'); // 이 버튼을 누르면 article꺼짐
+  articleBtn.onClick = function () {
+    console.log('클릭!');
+  };
+  articleBtn.id = 'startBtn';
+  articleBtn.textContent = '게임 시작하기';
+  articleDiv.append(articleP, articleBtn);
+  article.append(articleDiv);
+  document.body.append(article);
 
   // TODO : Header안에 h1태그, 제목, 클래스 주기
   let h1 = document.createElement('h1');
@@ -77,3 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // TODO: DOMContentLoaded확인하기
   console.log('hangman.js DOMContentLoaded');
 });
+
+hangman.displayQuestion = function () {
+  // 랜덤한 숫자 뽑아주는 randomInt
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+  // 랜덤한 단어 요청하기
+  fetch(
+    `https://www.wordgamedb.com/api/v1/words/?numLetters=${randomIntFromInterval(
+      3,
+      7
+    )}`
+  )
+    .then((res) => res.json())
+    .then((res) => console.log(res));
+};
