@@ -1,3 +1,4 @@
+import '../css/reset.css';
 import '../css/hangman.css';
 
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // TODO : Header안에 h1태그, 제목, 클래스 주기
   let h1 = document.createElement('h1');
   h1.textContent = '행맨 게임';
-  document.querySelector('main').appendChild(h1);
+  document.querySelector('header').appendChild(h1);
 
   // TODO : main 안에 행맨 이미지, 입력창, 점수 나타낼 div 만들고 main에 세팅
   let mainComponents = ['hangmanDisplay', 'hangmanInput', 'hangmanScore'];
