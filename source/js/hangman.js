@@ -7,7 +7,7 @@ hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
 hangman.userGuess = []; // 유저가 입력한 내용
 
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
-document.addEventListener('DOMContentLoaded', () => {
+hangman.start = () => {
   // TODO : 필요한 header, main, div 등 만들고 세팅
   let header = document.createElement('header');
   let main = document.createElement('main');
@@ -22,11 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let articleP = document.createElement('p');
   articleP.textContent = '행맨 게임에 오신것을 환영합니다!';
   let articleBtn = document.createElement('button'); // 이 버튼을 누르면 article꺼짐
-  articleBtn.onClick = function () {
-    console.log('클릭!');
-  };
   articleBtn.id = 'startBtn';
   articleBtn.textContent = '게임 시작하기';
+  // TODO : articleBtn 버튼 눌렀을 때 article 사라지는 함수 구현
+  articleBtn.addEventListener('click', () => {
+    article.style.display = 'none';
+    hangman.displayQuestion();
+  });
+  // 세팅하기
   articleDiv.append(articleP, articleBtn);
   article.append(articleDiv);
   document.body.append(article);
@@ -93,25 +96,35 @@ document.addEventListener('DOMContentLoaded', () => {
   for (let i = 0; i < bodyComponents.length; i++) {
     let bodyPart = document.createElement('div');
     bodyPart.id = bodyComponents[i]; // id 지정
+    bodyPart.style.display = 'none'; // class 지정
     readHangmanBody.appendChild(bodyPart);
   }
 
   // TODO: DOMContentLoaded확인하기
   console.log('hangman.js DOMContentLoaded');
-});
+};
 
 hangman.displayQuestion = function () {
+  let word = '';
   // 랜덤한 숫자 뽑아주는 randomInt
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   // 랜덤한 단어 요청하기
-  fetch(
-    `https://www.wordgamedb.com/api/v1/words/?numLetters=${randomIntFromInterval(
-      3,
-      7
-    )}`
-  )
-    .then((res) => res.json())
-    .then((res) => console.log(res));
+  fetch(`https://random-word-api.herokuapp.com/word?number=1`)
+    .then(
+      (res) => res.json().then((res) => (word = res[0])) // 단어 검색해옴
+    )
+    .then(() => {
+      fetch(`https://wordsapiv1.p.mashape.com/words/${word}`).then((res) =>
+        res.json().then((res) => console.log(res))
+      );
+    });
 };
+
+// Initialize app
+hangman.init = function () {
+  hangman.start();
+};
+
+hangman.init();
