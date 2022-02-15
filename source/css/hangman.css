@@ -8,10 +8,6 @@ body {
   cursor: url('/public/img/cursor.png'), auto;
 }
 
-#beforeStart.none {
-  display: none;
-}
-
 #beforeStart {
   width: 100vw;
   height: 100vh;
