@@ -1,5 +1,6 @@
 import '../css/reset.css';
 import '../css/hangman.css';
+require('dotenv').config();
 
 const hangman = {};
 hangman.twoPlayerQuestion = []; // 질문들
@@ -116,9 +117,10 @@ hangman.displayQuestion = function () {
       (res) => res.json().then((res) => (word = res[0])) // 단어 검색해옴
     )
     .then(() => {
-      fetch(`https://wordsapiv1.p.mashape.com/words/${word}`).then((res) =>
-        res.json().then((res) => console.log(res))
-      );
+      fetch(`https://wordsapiv1.p.mashape.com/words/${word}`, {
+        'x-rapidapi-host': process.env.WORDSAPI_HOST,
+        'x-rapidapi-key': process.env.WORDSAPI_MASHAPE_KEY,
+      }).then((res) => res.json().then((res) => console.log(res)));
     });
 };
 

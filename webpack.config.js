@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  target: 'node',
   mode: 'development',
   entry: {
     index: './source/js/index.js',
@@ -17,6 +18,17 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          query: { presets: 'es2015' },
+          options: {
+            presets: ['@babel/preset-env'],
+          },
+        },
       },
     ],
   },
