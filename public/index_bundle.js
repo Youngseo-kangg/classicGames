@@ -16,7 +16,7 @@
   \****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/index.css */ \"./source/css/index.css\");\n\ndocument.addEventListener('DOMContentLoaded', function () {\n  console.log('index.js 업로드');\n});\n\n//# sourceURL=webpack://classicgames/./source/js/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/index.css */ \"./source/css/index.css\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('index.js 업로드');\n});\n\n//# sourceURL=webpack://classicgames/./source/js/index.js?");
 
 /***/ }),
 

@@ -1,5 +1,9 @@
 const path = require('path');
+// import path from 'path';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   target: 'node',
@@ -16,23 +20,22 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
       },
       {
-        test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          query: { presets: 'es2015' },
-          options: {
-            presets: ['@babel/preset-env'],
-          },
-        },
+        test: /\.(png|jpe?g|gif)$/i,
+        use: 'file-loader',
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
+    new Dotenv(),
     new HtmlWebpackPlugin({
       title: '클래식 고전 게임',
       template: './source/index.html',
@@ -59,5 +62,6 @@ module.exports = {
         title: '행맨 게임',
       },
     }),
+    new CleanWebpackPlugin(),
   ],
 };

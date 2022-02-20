@@ -5,7 +5,6 @@ body {
   min-height: 653px;
   display: grid;
   grid-template-rows: 100px 550px 1fr;
-  cursor: url('/public/img/cursor.png'), auto;
 }
 
 #beforeStart {
@@ -38,7 +37,6 @@ body {
   background: #000;
   color: yellow;
   box-shadow: 5px 5px;
-  cursor: url('/public/img/cursor.png'), auto;
 }
 
 #startBtn:hover {

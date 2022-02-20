@@ -16,7 +16,7 @@
   \*****************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_tetris_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/tetris.css */ \"./source/css/tetris.css\");\n\ndocument.addEventListener('DOMContentLoaded', function () {\n  console.log('tetris.js 업로드');\n});\n\n//# sourceURL=webpack://classicgames/./source/js/tetris.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_tetris_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/tetris.css */ \"./source/css/tetris.css\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('tetris.js 업로드');\n});\n\n//# sourceURL=webpack://classicgames/./source/js/tetris.js?");
 
 /***/ }),
 

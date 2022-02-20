@@ -1,6 +1,8 @@
 import '../css/reset.css';
 import '../css/hangman.css';
-require('dotenv').config();
+// import dotenv from 'dotenv';
+// dotenv.config();
+// console.log(process.env.WORDSAPI_HOST);
 
 const hangman = {};
 hangman.twoPlayerQuestion = []; // 질문들
@@ -112,16 +114,15 @@ hangman.displayQuestion = function () {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
   // 랜덤한 단어 요청하기
-  fetch(`https://random-word-api.herokuapp.com/word?number=1`)
-    .then(
-      (res) => res.json().then((res) => (word = res[0])) // 단어 검색해옴
-    )
-    .then(() => {
-      fetch(`https://wordsapiv1.p.mashape.com/words/${word}`, {
-        'x-rapidapi-host': process.env.WORDSAPI_HOST,
-        'x-rapidapi-key': process.env.WORDSAPI_MASHAPE_KEY,
-      }).then((res) => res.json().then((res) => console.log(res)));
-    });
+  fetch(`https://random-word-api.herokuapp.com/word?number=1`).then(
+    (res) => res.json().then((res) => (word = res[0])) // 단어 검색해옴
+  );
+  // .then(() => {
+  //   fetch(`https://wordsapiv1.p.mashape.com/words/${word}`, {
+  //     'x-rapidapi-host': process.env.WORDSAPI_HOST,
+  //     'x-rapidapi-key': process.env.WORDSAPI_MASHAPE_KEY,
+  //   }).then((res) => res.json().then((res) => console.log(res)));
+  // });
 };
 
 // Initialize app
