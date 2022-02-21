@@ -10,6 +10,16 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./source/js/tetris.js":
+/*!*****************************!*\
+  !*** ./source/js/tetris.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_tetris_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/tetris.css */ \"./source/css/tetris.css\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('tetris.js 업로드');\n});\n\n//# sourceURL=webpack://classicgames/./source/js/tetris.js?");
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./source/css/tetris.css":
 /*!*********************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./source/css/tetris.css ***!
@@ -107,16 +117,6 @@ eval("\n\n/* istanbul ignore next  */\nfunction apply(styleElement, options, obj
 /***/ ((module) => {
 
 eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElement) {\n  if (styleElement.styleSheet) {\n    styleElement.styleSheet.cssText = css;\n  } else {\n    while (styleElement.firstChild) {\n      styleElement.removeChild(styleElement.firstChild);\n    }\n\n    styleElement.appendChild(document.createTextNode(css));\n  }\n}\n\nmodule.exports = styleTagTransform;\n\n//# sourceURL=webpack://classicgames/./node_modules/style-loader/dist/runtime/styleTagTransform.js?");
-
-/***/ }),
-
-/***/ "./source/js/tetris.js":
-/*!*****************************!*\
-  !*** ./source/js/tetris.js ***!
-  \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_tetris_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/tetris.css */ \"./source/css/tetris.css\");\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('tetris.js 업로드');\n});\n\n\n//# sourceURL=webpack://classicgames/./source/js/tetris.js?");
 
 /***/ })
 

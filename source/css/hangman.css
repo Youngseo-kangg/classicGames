@@ -1,16 +1,15 @@
 body {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   min-width: 280px;
   min-height: 653px;
   display: grid;
-  grid-template-rows: 100px 550px 1fr;
-  cursor: url('/public/img/cursor.png'), auto;
+  grid-template-rows: 50px 1fr 50px;
 }
 
 #beforeStart {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -38,7 +37,6 @@ body {
   background: #000;
   color: yellow;
   box-shadow: 5px 5px;
-  cursor: url('/public/img/cursor.png'), auto;
 }
 
 #startBtn:hover {
@@ -49,7 +47,8 @@ body {
 main {
   display: grid;
   place-items: center;
-  grid-template-rows: 430px 1fr 1fr;
+  row-gap: 10px;
+  grid-template-rows: 350px 120px 1fr 1fr 1fr;
 }
 
 header {
@@ -187,4 +186,52 @@ button {
 input {
   border-bottom: 2px solid #eee;
   outline: none;
+}
+
+@media (max-width: 330px) {
+  #hangmanDisplay {
+    position: relative;
+    width: 280px;
+    height: 350px;
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  #tree {
+    top: 55px;
+  }
+  #branch {
+    top: 55px;
+  }
+  #rope {
+    top: 55px;
+    left: 140px;
+  }
+  #head {
+    left: 120px;
+    top: 75px;
+  }
+  #torso {
+    left: 140px;
+    top: 120px;
+  }
+  #leftArm {
+    top: 120px;
+    left: 130px;
+  }
+
+  #rightArm {
+    top: 120px;
+    left: 150px;
+  }
+
+  #leftLeg {
+    top: 185px;
+    left: 130px;
+  }
+
+  #rightLeg {
+    top: 185px;
+    left: 150px;
+  }
 }

@@ -10,6 +10,16 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./source/js/index.js":
+/*!****************************!*\
+  !*** ./source/js/index.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/index.css */ \"./source/css/index.css\");\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('index.js 업로드');\n});\n\n//# sourceURL=webpack://classicgames/./source/js/index.js?");
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./source/css/index.css":
 /*!********************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./source/css/index.css ***!
@@ -107,16 +117,6 @@ eval("\n\n/* istanbul ignore next  */\nfunction apply(styleElement, options, obj
 /***/ ((module) => {
 
 eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElement) {\n  if (styleElement.styleSheet) {\n    styleElement.styleSheet.cssText = css;\n  } else {\n    while (styleElement.firstChild) {\n      styleElement.removeChild(styleElement.firstChild);\n    }\n\n    styleElement.appendChild(document.createTextNode(css));\n  }\n}\n\nmodule.exports = styleTagTransform;\n\n//# sourceURL=webpack://classicgames/./node_modules/style-loader/dist/runtime/styleTagTransform.js?");
-
-/***/ }),
-
-/***/ "./source/js/index.js":
-/*!****************************!*\
-  !*** ./source/js/index.js ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/index.css */ \"./source/css/index.css\");\n\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  console.log('index.js 업로드');\n});\n\n\n//# sourceURL=webpack://classicgames/./source/js/index.js?");
 
 /***/ })
 
