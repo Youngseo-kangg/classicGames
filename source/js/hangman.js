@@ -1,13 +1,15 @@
 import '../css/reset.css';
 import '../css/hangman.css';
-// import dotenv from 'dotenv';
-// dotenv.config();
-// console.log(process.env.WORDSAPI_HOST);
 
 const hangman = {};
-hangman.twoPlayerQuestion = []; // 질문들
+hangman.word = ''; //단어
+hangman.definition = 'no hint, good luck!'; // 단어 정의
+hangman.partOfSpeech = 'no hint, good luck!'; // 품사 정의
+hangman.typeOf = ['no hint, good luck!']; // 카테고리 정의
 hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
-hangman.userGuess = []; // 유저가 입력한 내용
+hangman.lives = 6; // 입력 기회
+hangman.spelling = []; // 단어 스펠링
+hangman.userGuess = ['a', 'b']; // 유저가 입력한 내용
 
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
 hangman.start = () => {
@@ -43,12 +45,44 @@ hangman.start = () => {
   document.querySelector('header').appendChild(h1);
 
   // TODO : main 안에 행맨 이미지, 입력창, 점수 나타낼 div 만들고 main에 세팅
-  let mainComponents = ['hangmanDisplay', 'hangmanInput', 'hangmanScore'];
+  let mainComponents = [
+    'hangmanDisplay',
+    'hangmanHint',
+    'hangmanScore',
+    'hangmanGuess',
+    'hangmanInput',
+  ];
   let readMain = document.querySelector('main');
   for (let i = 0; i < mainComponents.length; i++) {
     let div = document.createElement('section'); // section 새로 생성
     div.id = mainComponents[i]; // id 지정
     readMain.appendChild(div);
+  }
+
+  // TODO : 점수창, 틀린 알파벳 창 세팅
+  let readHangmanScore = document.querySelector('#hangmanScore');
+  readHangmanScore.textContent = `opportunities : ${hangman.lives}`;
+  let readHangmanGuess = document.querySelector('#hangmanGuess');
+  readHangmanGuess.textContent = `Guess : ${hangman.userGuess.reduce(
+    (acc, cur) => (acc = acc + ',' + cur)
+  )}`;
+
+  // TODO : 단어 정의, 카테고리, 품사 정의 관련 div 만들기
+  let readHangmanHint = document.querySelector('#hangmanHint');
+  let hangmanHints = ['definition', 'partOfSpeech', 'typeOf'];
+  for (let i = 0; i < hangmanHints.length; i++) {
+    let hangmanHintWrapper = document.createElement('div'); // wrapper만들어주기
+    hangmanHintWrapper.id = hangmanHints[i]; // id 지정
+    readHangmanHint.appendChild(hangmanHintWrapper); // 붙여주기
+  }
+  for (let i = 0; i < hangmanHints.length; i++) {
+    let readHangmanHint = document.querySelector(`#${hangmanHints[i]}`);
+    let hangmanHintText = document.createElement('p'); // 내용 태그
+    hangmanHintText.classList.add(hangmanHints[i]);
+    hangmanHintText.textContent = `${hangmanHints[i]}: ${
+      hangman[hangmanHints[i]]
+    }`; // 내용에 텍스트 넣어주기
+    readHangmanHint.append(hangmanHintText);
   }
 
   // TODO : 알파벳 입력창 + 버튼 담아둘 div 만들고 hangmanInput에 세팅
@@ -108,21 +142,51 @@ hangman.start = () => {
 };
 
 hangman.displayQuestion = function () {
-  let word = '';
-  // 랜덤한 숫자 뽑아주는 randomInt
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
   // 랜덤한 단어 요청하기
-  fetch(`https://random-word-api.herokuapp.com/word?number=1`).then(
-    (res) => res.json().then((res) => (word = res[0])) // 단어 검색해옴
-  );
-  // .then(() => {
-  //   fetch(`https://wordsapiv1.p.mashape.com/words/${word}`, {
-  //     'x-rapidapi-host': process.env.WORDSAPI_HOST,
-  //     'x-rapidapi-key': process.env.WORDSAPI_MASHAPE_KEY,
-  //   }).then((res) => res.json().then((res) => console.log(res)));
-  // });
+  fetch(
+    'https://wordsapiv1.p.rapidapi.com/words/?random=true&lettersMin=1&lettersMax=10',
+    {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': process.env.WORDSAPI_HOST,
+        'x-rapidapi-key': process.env.WORDSAPI_MASHAPE_KEY,
+      },
+    }
+  )
+    .then((res) => {
+      res
+        .json()
+        .then((res) => {
+          // console.log(res);
+          hangman.word = res.word; // 재할당
+          if (res.results !== undefined) {
+            if (res.results.length >= 1) {
+              if (res.results[0].definition) {
+                hangman.definition = res.results[0].definition;
+                let readHangmanDefinition =
+                  document.querySelector('.definition');
+                readHangmanDefinition.textContent = `definition : ${hangman.definition}`;
+              }
+              if (res.results[0].partOfSpeech) {
+                hangman.partOfSpeech = res.results[0].partOfSpeech;
+                let readHangmanSpeech = document.querySelector('.partOfSpeech');
+                readHangmanSpeech.textContent = `partOfSpeech : ${hangman.partOfSpeech}`;
+              }
+              if (res.results[0].typeOf) {
+                hangman.typeOf = res.results[0].typeOf;
+                let readHangmanTypeof = document.querySelector('.typeOf');
+                readHangmanTypeof.textContent = `typeOf : ${hangman.typeOf}`;
+              }
+            }
+          }
+          // console.log(hangman);
+        })
+        .then(() => {});
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  // 요청한 단어 베이스로 칸 만들어 주기
 };
 
 // Initialize app
