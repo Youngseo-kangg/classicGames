@@ -5,7 +5,7 @@ const hangman = {};
 hangman.word = ''; //단어
 hangman.definition = 'no hint, good luck!'; // 단어 정의
 hangman.partOfSpeech = 'no hint, good luck!'; // 품사 정의
-hangman.typeOf = ['no hint, good luck!']; // 카테고리 정의
+hangman.typeOf = ['no hint, good luck!', 'dd']; // 카테고리 정의
 hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
 hangman.lives = 6; // 입력 기회
 hangman.spelling = []; // 단어 스펠링
@@ -77,12 +77,12 @@ hangman.start = () => {
   }
   for (let i = 0; i < hangmanHints.length; i++) {
     let readHangmanHint = document.querySelector(`#${hangmanHints[i]}`);
-    let hangmanHintText = document.createElement('p'); // 내용 태그
-    hangmanHintText.classList.add(hangmanHints[i]);
-    hangmanHintText.textContent = `${hangmanHints[i]}: ${
-      hangman[hangmanHints[i]]
-    }`; // 내용에 텍스트 넣어주기
-    readHangmanHint.append(hangmanHintText);
+    let hangmanHintText = document.createElement('div'); // 내용 태그
+    let hangmanHintTitle = document.createElement('h2');
+    hangmanHintText.id = `${hangmanHints[i]}Text`;
+    hangmanHintTitle.textContent = hangmanHints[i];
+    hangmanHintText.textContent = 'no hint, good luck!';
+    readHangmanHint.append(hangmanHintTitle, hangmanHintText);
   }
 
   // TODO : 알파벳 입력창 + 버튼 담아둘 div 만들고 hangmanInput에 세팅
@@ -163,23 +163,31 @@ hangman.displayQuestion = function () {
             if (res.results.length >= 1) {
               if (res.results[0].definition) {
                 hangman.definition = res.results[0].definition;
-                let readHangmanDefinition =
-                  document.querySelector('.definition');
-                readHangmanDefinition.textContent = `definition : ${hangman.definition}`;
+                let readHangmanHint = document.querySelector(`#definitionText`);
+                readHangmanHint.textContent = hangman.definition;
               }
               if (res.results[0].partOfSpeech) {
                 hangman.partOfSpeech = res.results[0].partOfSpeech;
-                let readHangmanSpeech = document.querySelector('.partOfSpeech');
-                readHangmanSpeech.textContent = `partOfSpeech : ${hangman.partOfSpeech}`;
+                let readHangmanHint =
+                  document.querySelector(`#partOfSpeechText`);
+                readHangmanHint.textContent = '';
+                let partOfSpeechTextComponents = document.createElement('p');
+                partOfSpeechTextComponents.textContent = hangman.partOfSpeech;
+                readHangmanHint.appendChild(partOfSpeechTextComponents);
               }
               if (res.results[0].typeOf) {
                 hangman.typeOf = res.results[0].typeOf;
-                let readHangmanTypeof = document.querySelector('.typeOf');
-                readHangmanTypeof.textContent = `typeOf : ${hangman.typeOf}`;
+                let readHangmanHint = document.querySelector(`#typeOfText`);
+                readHangmanHint.textContent = '';
+                hangman.typeOf.map((el) => {
+                  let typeOfTextComponents = document.createElement('p');
+                  typeOfTextComponents.textContent = el;
+                  readHangmanHint.appendChild(typeOfTextComponents);
+                });
               }
             }
           }
-          // console.log(hangman);
+          console.log(hangman);
         })
         .then(() => {});
     })
