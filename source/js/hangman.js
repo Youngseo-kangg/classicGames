@@ -5,11 +5,11 @@ const hangman = {};
 hangman.word = ''; //단어
 hangman.definition = 'no hint, good luck!'; // 단어 정의
 hangman.partOfSpeech = 'no hint, good luck!'; // 품사 정의
-hangman.typeOf = ['no hint, good luck!', 'dd']; // 카테고리 정의
+hangman.typeOf = ['no hint, good luck!']; // 카테고리 정의
 hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
 hangman.lives = 6; // 입력 기회
 hangman.spelling = []; // 단어 스펠링
-hangman.userGuess = ['a', 'b']; // 유저가 입력한 내용
+hangman.userGuess = []; // 유저가 입력한 내용
 
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
 hangman.start = () => {
@@ -18,6 +18,19 @@ hangman.start = () => {
   let main = document.createElement('main');
   let footer = document.createElement('footer');
   document.body.append(header, main, footer);
+
+  // TODO : landing indicator 만들기
+  let loadingIndicatorBg = document.createElement('article');
+  loadingIndicatorBg.id = 'loadingIndicatorBg';
+  let loadingIndicator = document.createElement('div');
+  loadingIndicator.classList.add('lds-ellipsis');
+  for (let i = 0; i < 4; i++) {
+    let loadingDots = document.createElement('div');
+    loadingIndicator.append(loadingDots);
+  }
+  loadingIndicatorBg.classList.add('none');
+  loadingIndicatorBg.append(loadingIndicator);
+  document.body.append(loadingIndicatorBg);
 
   // TODO : 처음 접속했을때 띄울 안내 article 만들고 세팅
   let article = document.createElement('article'); // 시작버튼 누르기 전 창으로 작동할 태그
@@ -47,6 +60,7 @@ hangman.start = () => {
   // TODO : main 안에 행맨 이미지, 입력창, 점수 나타낼 div 만들고 main에 세팅
   let mainComponents = [
     'hangmanDisplay',
+    'hangmanBlocks',
     'hangmanHint',
     'hangmanScore',
     'hangmanGuess',
@@ -59,13 +73,17 @@ hangman.start = () => {
     readMain.appendChild(div);
   }
 
+  // TODO : hangmanBlockWrapper 만들어주기
+  let readHangmanBlocks = document.querySelector('#hangmanBlocks');
+  let hangmanBlockWrapper = document.createElement('div');
+  hangmanBlockWrapper.id = 'hangmanBlockWrapper';
+  readHangmanBlocks.append(hangmanBlockWrapper);
+
   // TODO : 점수창, 틀린 알파벳 창 세팅
   let readHangmanScore = document.querySelector('#hangmanScore');
   readHangmanScore.textContent = `opportunities : ${hangman.lives}`;
   let readHangmanGuess = document.querySelector('#hangmanGuess');
-  readHangmanGuess.textContent = `Guess : ${hangman.userGuess.reduce(
-    (acc, cur) => (acc = acc + ',' + cur)
-  )}`;
+  readHangmanGuess.textContent = `Guess : what are your guesses?`;
 
   // TODO : 단어 정의, 카테고리, 품사 정의 관련 div 만들기
   let readHangmanHint = document.querySelector('#hangmanHint');
@@ -100,8 +118,16 @@ hangman.start = () => {
 
   // TODO : 알파벳 입력 버튼 만들기
   let alphabetInputButton = document.createElement('button');
+  let refreshButton = document.createElement('button');
   alphabetInputButton.textContent = '입력하기';
-  readHangmanInputWrapper.append(alphabetInputButton);
+  alphabetInputButton.id = 'alphabetInputButton';
+  refreshButton.id = 'refreshBtn';
+  refreshButton.textContent = '새로고침';
+  refreshButton.addEventListener('click', () => {
+    // TODO : hangman 초기화 + 새로운 단어 요청
+    hangman.displayQuestion();
+  });
+  readHangmanInputWrapper.append(alphabetInputButton, refreshButton);
 
   // TODO : 행맨 매달릴 부분 + 캐릭터 만들기
   let readHangmanDisplay = document.querySelector('#hangmanDisplay');
@@ -142,7 +168,19 @@ hangman.start = () => {
 };
 
 hangman.displayQuestion = function () {
-  // 랜덤한 단어 요청하기
+  // TODO : loading indicator 켜기
+  let loadingIndicatorBg = document.querySelector('#loadingIndicatorBg');
+  loadingIndicatorBg.classList.remove('none');
+  // TODO : 단어 초기화
+  hangman.word = ''; //단어
+  hangman.definition = 'no hint, good luck!'; // 단어 정의
+  hangman.partOfSpeech = 'no hint, good luck!'; // 품사 정의
+  hangman.typeOf = ['no hint, good luck!']; // 카테고리 정의
+  hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
+  hangman.lives = 6; // 입력 기회
+  hangman.spelling = []; // 단어 스펠링
+  hangman.userGuess = ['a', 'b']; // 유저가 입력한 내용
+  // TODO : 랜덤한 단어 요청하기
   fetch(
     'https://wordsapiv1.p.rapidapi.com/words/?random=true&lettersMin=1&lettersMax=10',
     {
@@ -159,6 +197,18 @@ hangman.displayQuestion = function () {
         .then((res) => {
           // console.log(res);
           hangman.word = res.word; // 재할당
+          // TODO : 단어 보고 네모 창 만들기
+          let hangmanAlphabet = hangman.word.split('');
+          for (let i = 0; i < hangmanAlphabet.length; i++) {
+            let hangmanBlock = document.createElement('div');
+            if (hangmanAlphabet[i] !== '-' && hangmanAlphabet[i] !== ' ') {
+              hangmanBlock.classList.add('hangmanBlock');
+            } else {
+              hangmanBlock.classList.add('hangmanOtherBlock');
+            }
+            hangmanBlock.textContent = hangmanAlphabet[i];
+            document.querySelector('#hangmanBlockWrapper').append(hangmanBlock);
+          }
           if (res.results !== undefined) {
             if (res.results.length >= 1) {
               if (res.results[0].definition) {
@@ -176,23 +226,42 @@ hangman.displayQuestion = function () {
                 readHangmanHint.appendChild(partOfSpeechTextComponents);
               }
               if (res.results[0].typeOf) {
-                hangman.typeOf = res.results[0].typeOf;
+                hangman.typeOf = res.results[0].typeOf[0];
                 let readHangmanHint = document.querySelector(`#typeOfText`);
                 readHangmanHint.textContent = '';
-                hangman.typeOf.map((el) => {
-                  let typeOfTextComponents = document.createElement('p');
-                  typeOfTextComponents.textContent = el;
-                  readHangmanHint.appendChild(typeOfTextComponents);
-                });
+                let typeOfTextComponents = document.createElement('p');
+                typeOfTextComponents.textContent = hangman.typeOf;
+                readHangmanHint.appendChild(typeOfTextComponents);
               }
             }
           }
-          console.log(hangman);
         })
-        .then(() => {});
+        .then(() => {
+          // TODO : loading indicator 끄기
+          loadingIndicatorBg.classList.add('none');
+        });
     })
     .catch((err) => {
       console.error(err);
+      // TODO: 에러 생겼다는 메세지 보여주기
+      let article = document.createElement('article'); // 에러창으로 작동할 태그
+      article.id = 'vocabError';
+      let articleDiv = document.createElement('div');
+      articleDiv.id = 'vocabErrorMsg';
+      let articleP = document.createElement('p');
+      articleP.textContent = '단어를 받아오던 중 에러가 발생했습니다.';
+      let articleBtn = document.createElement('button'); // 이 버튼을 누르면 article꺼짐
+      articleBtn.id = 'startBtn';
+      articleBtn.textContent = '다시시작하기';
+      // TODO : articleBtn 버튼 눌렀을 때 article 사라지는 함수 구현
+      articleBtn.addEventListener('click', () => {
+        article.style.display = 'none'; // 에러창 없애주기
+        window.location.reload(); // 새로고침
+      });
+      // 세팅하기
+      articleDiv.append(articleP, articleBtn);
+      article.append(articleDiv);
+      document.body.append(article);
     });
   // 요청한 단어 베이스로 칸 만들어 주기
 };
