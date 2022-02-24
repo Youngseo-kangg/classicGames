@@ -9,7 +9,8 @@ body {
 
 #beforeStart,
 #vocabError,
-#loadingIndicatorBg {
+#loadingIndicatorBg,
+#typeErrorBg {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -22,12 +23,14 @@ body {
   place-items: center;
 }
 
-#loadingIndicatorBg.none {
+#loadingIndicatorBg.none,
+#typeErrorBg.none {
   display: none;
 }
 
 #beforeStartMsg,
-#vocabErrorMsg {
+#vocabErrorMsg,
+#typeError {
   width: 250px;
   height: 150px;
   display: grid;
@@ -186,9 +189,14 @@ h1 {
   border-bottom: 2px solid #eee;
   width: 30px;
   height: 30px;
+  margin-right: 5px;
   display: grid;
   place-items: center;
 }
+.hangmanBlock:last-child {
+  margin-right: none;
+}
+
 .hangmanOtherBlock {
   border: none;
   width: 30px;
