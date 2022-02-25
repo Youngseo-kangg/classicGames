@@ -197,7 +197,7 @@ h1 {
   margin-right: none;
 }
 
-.hangmanOtherBlock {
+.nonAlphabet {
   border: none;
   width: 30px;
   height: 30px;

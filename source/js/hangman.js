@@ -216,18 +216,22 @@ hangman.displayQuestion = function () {
       res
         .json()
         .then((res) => {
-          // console.log(res);
+          console.log(res.word);
           hangman.word = res.word; // 재할당
           // TODO : 단어 보고 네모 창 만들기
           let hangmanAlphabet = hangman.word.split('');
           for (let i = 0; i < hangmanAlphabet.length; i++) {
             let hangmanBlock = document.createElement('div');
-            if (hangmanAlphabet[i] !== '-' && hangmanAlphabet[i] !== ' ') {
-              hangmanBlock.classList.add('hangmanBlock');
-            } else {
-              hangmanBlock.classList.add('hangmanOtherBlock');
+            hangmanBlock.classList.add('hangmanBlock');
+            if (hangmanAlphabet[i] === ' ') {
+              hangmanBlock.classList.add('nonAlphabet');
+            } else if (hangmanAlphabet[i] === '-') {
+              hangmanBlock.classList.add('nonAlphabet');
+              hangmanBlock.textContent = '-';
+            } else if (hangmanAlphabet[i] === '.') {
+              hangmanBlock.classList.add('nonAlphabet');
+              hangmanBlock.textContent = '.';
             }
-            // hangmanBlock.textContent = hangmanAlphabet[i];
             document.querySelector('#hangmanBlockWrapper').append(hangmanBlock);
           }
           if (res.results !== undefined) {
@@ -311,6 +315,7 @@ hangman.typeLetter = function (event) {
       document.querySelector('#letterInput').value = ''; // input창 초기화
     });
   } else if (!hangman.validGuess.test(letterInput)) {
+    console.log('!hangman.validGuess.test(letterInput)');
     // 입력된 알파벳이 영어가 아닐때 오류 모달 띄워주기
     readTypeErrorP.textContent = '영어만 입력할 수 없습니다.'; // 메세지 변경하기
     readTypeErrorBg.classList.remove('none'); // 모달 띄우기
@@ -319,7 +324,7 @@ hangman.typeLetter = function (event) {
       document.querySelector('#letterInput').value = ''; // input창 초기화
     });
   } else if (hangman.userGuess.includes(letterInput)) {
-    console.log(hangman.userGuess);
+    console.log('hangman.userGuess.includes(letterInput)');
     // 입력된 알파벳이 #hangmanGuess에 이미 존재할 오류 모달 띄워주기
     readTypeErrorP.textContent = '이미 입력한 글자입니다.'; // 메세지 변경하기
     readTypeErrorBg.classList.remove('none'); // 모달 띄우기
@@ -328,6 +333,7 @@ hangman.typeLetter = function (event) {
       document.querySelector('#letterInput').value = ''; // input창 초기화
     });
   } else if (hangman.word.includes(letterInput)) {
+    console.log('hangman.word.includes(letterInput)');
     // 존재하는 단어를 입력하는 경우
     let readHangmanBlock = document.querySelectorAll('.hangmanBlock');
     let hangmanWord = hangman.word.split('');
@@ -348,6 +354,8 @@ hangman.typeLetter = function (event) {
   } else {
     // 존재하지 않는 단어를 입력하는 경우
     hangman.lives--; // hangman.lives 재조정
+    console.log(`존재하지 않는 알파벳 입력 : ${hangman.userGuess}`);
+    hangman.userGuess.push(letterInput); // hangman.userGuess에 넣어주기
     document.querySelector(
       '#hangmanScore'
     ).textContent = `opportunities: ${hangman.lives}`; // hangmanScore 변경
@@ -365,6 +373,12 @@ hangman.typeLetter = function (event) {
         readHangmanGuess.textContent + ' ' + letterInput;
     }
   }
+
+  // TODO : hangman.opportunities가 0이 되면 실패메세지 보여주기
+  if (hangman.opportunities === 0) {
+    // 실패 메세지 보여주기 + 새로고침 해주기
+  }
+  // TODO : 단어를 다 맞추게 되는 경우 성공메세지 보여주기
 };
 
 // Initialize app
