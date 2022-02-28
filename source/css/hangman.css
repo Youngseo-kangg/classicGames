@@ -10,7 +10,7 @@ body {
 #beforeStart,
 #vocabError,
 #loadingIndicatorBg,
-#typeErrorBg {
+#messageBg {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -24,13 +24,13 @@ body {
 }
 
 #loadingIndicatorBg.none,
-#typeErrorBg.none {
+#messageBg.none {
   display: none;
 }
 
 #beforeStartMsg,
 #vocabErrorMsg,
-#typeError {
+#message {
   width: 250px;
   height: 150px;
   display: grid;
@@ -40,7 +40,8 @@ body {
   color: #fff;
 }
 
-#startBtn {
+#startBtn,
+#messageBtn {
   width: 100px;
   height: 30px;
   font-size: 14px;

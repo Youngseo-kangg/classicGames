@@ -10,6 +10,8 @@ hangman.validGuess = /[a-zA-Z]/; // 유효성 검사용
 hangman.lives = 6; // 입력 기회
 hangman.spelling = []; // 단어 스펠링
 hangman.userGuess = []; // 유저가 입력한 내용
+hangman.errorTitle = '';
+hangman.errorMessage = '';
 
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
 hangman.start = () => {
@@ -32,20 +34,23 @@ hangman.start = () => {
   loadingIndicatorBg.append(loadingIndicator);
   document.body.append(loadingIndicatorBg);
 
-  // TODO : 입력 에러창 만들어주기
-  let typeErrorBg = document.createElement('article');
-  typeErrorBg.id = 'typeErrorBg';
-  let typeError = document.createElement('div');
-  typeError.id = 'typeError';
-  let typeErrorP = document.createElement('p');
-  typeErrorP.id = 'typeErrorP';
-  let typeErrorBtn = document.createElement('button'); // 이 버튼을 누르면 article꺼짐
-  typeErrorBtn.id = 'typeErrorBtn';
-  typeErrorBtn.textContent = '닫기';
-  typeErrorBg.classList.add('none');
-  typeError.append(typeErrorP, typeErrorBtn);
-  typeErrorBg.append(typeError);
-  document.body.append(typeErrorBg);
+  // TODO : 메세지 창 만들어주기
+  let messageBg = document.createElement('article');
+  messageBg.id = 'messageBg';
+  let message = document.createElement('div');
+  message.id = 'message';
+  let messageP = document.createElement('p');
+  messageP.id = 'messageP';
+  let messageBtn = document.createElement('button');
+  messageBtn.id = 'messageBtn';
+  messageBtn.textContent = '닫기';
+  messageBtn.addEventListener('click', () => {
+    messageBg.style.display = 'none';
+  }); // 이 버튼을 누르면 article꺼짐
+  messageBg.style.display = 'none';
+  message.append(messageP, messageBtn);
+  messageBg.append(message);
+  document.body.append(messageBg);
 
   // TODO : 처음 접속했을때 띄울 안내 article 만들고 세팅
   let article = document.createElement('article'); // 시작버튼 누르기 전 창으로 작동할 태그
@@ -224,12 +229,12 @@ hangman.displayQuestion = function () {
             let hangmanBlock = document.createElement('div');
             hangmanBlock.classList.add('hangmanBlock');
             if (hangmanAlphabet[i] === ' ') {
-              hangmanBlock.classList.add('nonAlphabet');
+              hangmanBlock.classList.add('nonAlphabet', 'correct');
             } else if (hangmanAlphabet[i] === '-') {
               hangmanBlock.classList.add('nonAlphabet');
               hangmanBlock.textContent = '-';
             } else if (hangmanAlphabet[i] === '.') {
-              hangmanBlock.classList.add('nonAlphabet');
+              hangmanBlock.classList.add('nonAlphabet', 'correct');
               hangmanBlock.textContent = '.';
             }
             document.querySelector('#hangmanBlockWrapper').append(hangmanBlock);
@@ -260,9 +265,17 @@ hangman.displayQuestion = function () {
               }
             }
           }
-          // opportunities, guess 초기화
+          // opportunities, guess, hangman 캐릭터 초기화
           hangman.lives = 6;
           hangman.userGuess = [];
+          for (
+            let i = 0;
+            i < document.querySelectorAll('.hangmanBodyPart').length;
+            i++
+          ) {
+            document.querySelectorAll('.hangmanBodyPart')[i].style.display =
+              'none';
+          }
           document.querySelector(
             '#hangmanScore'
           ).textContent = `opportunities : ${hangman.lives}`;
@@ -302,68 +315,36 @@ hangman.displayQuestion = function () {
 
 hangman.typeLetter = function (event) {
   let letterInput = event.target.value;
-  let readTypeErrorBg = document.querySelector('#typeErrorBg');
-  let readTypeErrorP = document.querySelector('#typeErrorP');
-  let readTypeErrorBtn = document.querySelector('#typeErrorBtn');
+  let readMessageBg = document.querySelector('#messageBg');
+  let readMessageP = document.querySelector('#messageP');
+  let readMessageBtn = document.querySelector('#messageBtn');
   // * 에러 적용시키기
   if (letterInput.length > 1) {
     // 한글자 이상 입력했을 때 오류 모달 띄워주기
-    readTypeErrorP.textContent = '한 글자 이상 입력할 수 없습니다.'; // 메세지 변경하기
-    readTypeErrorBg.classList.remove('none'); // 모달 띄우기
-    readTypeErrorBtn.addEventListener('click', () => {
-      readTypeErrorBg.classList.add('none'); // 모달 끄기
+    readMessageP.textContent = '한 글자 이상 입력할 수 없습니다.'; // 메세지 변경하기
+    readMessageBg.style.display = 'grid'; // 모달 띄우기
+    readMessageBtn.addEventListener('click', () => {
+      readMessageBg.style.display = 'none'; // 모달 끄기
       document.querySelector('#letterInput').value = ''; // input창 초기화
     });
   } else if (!hangman.validGuess.test(letterInput)) {
-    console.log('!hangman.validGuess.test(letterInput)');
-    // 입력된 알파벳이 영어가 아닐때 오류 모달 띄워주기
-    readTypeErrorP.textContent = '영어만 입력할 수 없습니다.'; // 메세지 변경하기
-    readTypeErrorBg.classList.remove('none'); // 모달 띄우기
-    readTypeErrorBtn.addEventListener('click', () => {
-      readTypeErrorBg.classList.add('none'); // 모달 끄기
+    readMessageP.textContent = '영어만 입력할 수 없습니다.'; // 메세지 변경하기
+    readMessageBg.style.display = 'grid'; // 모달 띄우기
+    readMessageBtn.addEventListener('click', () => {
+      readMessageBg.style.display = 'none'; // 모달 끄기
       document.querySelector('#letterInput').value = ''; // input창 초기화
     });
   } else if (hangman.userGuess.includes(letterInput)) {
-    console.log('hangman.userGuess.includes(letterInput)');
-    // 입력된 알파벳이 #hangmanGuess에 이미 존재할 오류 모달 띄워주기
-    readTypeErrorP.textContent = '이미 입력한 글자입니다.'; // 메세지 변경하기
-    readTypeErrorBg.classList.remove('none'); // 모달 띄우기
-    readTypeErrorBtn.addEventListener('click', () => {
-      readTypeErrorBg.classList.add('none'); // 모달 끄기
+    readMessageP.textContent = '이미 입력한 글자입니다.'; // 메세지 변경하기
+    readMessageBg.style.display = 'grid'; // 모달 띄우기
+    readMessageBtn.addEventListener('click', () => {
+      readMessageBg.style.display = 'none'; // 모달 끄기
       document.querySelector('#letterInput').value = ''; // input창 초기화
     });
-  } else if (hangman.word.includes(letterInput)) {
-    console.log('hangman.word.includes(letterInput)');
-    // 존재하는 단어를 입력하는 경우
-    let readHangmanBlock = document.querySelectorAll('.hangmanBlock');
-    let hangmanWord = hangman.word.split('');
-    for (let i = 0; i < hangmanWord.length; i++) {
-      if (hangmanWord[i] === letterInput) {
-        readHangmanBlock[i].textContent = letterInput;
-      }
-    }
-    // #hangmanGuess에 추가해주기
-    let readHangmanGuess = document.querySelector('#hangmanGuess');
-    if (readHangmanGuess.textContent === 'Guess : what are your guesses?') {
-      readHangmanGuess.textContent = `Guess : ${letterInput}`;
-    } else {
-      readHangmanGuess.textContent =
-        readHangmanGuess.textContent + ' ' + letterInput;
-    }
-    document.querySelector('#letterInput').value = ''; // input창 초기화
   } else {
     // 존재하지 않는 단어를 입력하는 경우
-    hangman.lives--; // hangman.lives 재조정
-    console.log(`존재하지 않는 알파벳 입력 : ${hangman.userGuess}`);
     hangman.userGuess.push(letterInput); // hangman.userGuess에 넣어주기
-    document.querySelector(
-      '#hangmanScore'
-    ).textContent = `opportunities: ${hangman.lives}`; // hangmanScore 변경
     document.querySelector('#letterInput').value = ''; // input창 초기화
-    // .hangmanBody.none에서 하나씩 none 없애주기
-    document.querySelectorAll('.hangmanBodyPart')[
-      `${6 - hangman.lives - 1}`
-    ].style.display = 'block';
     // #hangmanGuess에 추가해주기
     let readHangmanGuess = document.querySelector('#hangmanGuess');
     if (readHangmanGuess.textContent === 'Guess : what are your guesses?') {
@@ -371,14 +352,48 @@ hangman.typeLetter = function (event) {
     } else {
       readHangmanGuess.textContent =
         readHangmanGuess.textContent + ' ' + letterInput;
+    }
+
+    if (hangman.word.includes(letterInput)) {
+      // 맞는 단어라면
+      let readHangmanBlock = document.querySelectorAll('.hangmanBlock');
+      for (let i = 0; i < hangman.word.length; i++) {
+        if (hangman.word[i] === letterInput) {
+          readHangmanBlock[i].textContent = letterInput; // 텍스트 추가
+          readHangmanBlock[i].classList.add('correct'); // 커스텀 데이터 속성 추가
+        }
+      }
+    } else {
+      // 틀린 단어라면
+      hangman.lives--; // hangman.lives 재조정
+      document.querySelector(
+        '#hangmanScore'
+      ).textContent = `opportunities: ${hangman.lives}`; // hangmanScore 변경
+      document.querySelectorAll('.hangmanBodyPart')[
+        `${6 - hangman.lives - 1}`
+      ].style.display = 'block'; // hangman body 하나 보여주기
     }
   }
 
-  // TODO : hangman.opportunities가 0이 되면 실패메세지 보여주기
-  if (hangman.opportunities === 0) {
-    // 실패 메세지 보여주기 + 새로고침 해주기
+  if (document.querySelectorAll('.correct').length === hangman.word.length) {
+    // TODO : 단어를 다 맞추게 되는 경우 성공메세지 보여주기
+    readMessageP.textContent = `모두 맞췄습니다! 단어는 ${hangman.word} 였습니다.`; // 메세지 변경하기
+    readMessageBg.style.display = 'grid'; // 모달 띄우기
+    readMessageBtn.addEventListener('click', () => {
+      readMessageBg.style.display = 'none'; // 모달 끄기
+      document.querySelector('#letterInput').value = ''; // input창 초기화
+      window.location.replace('index.html'); // 새로고침
+    });
+  } else if (hangman.lives === 0) {
+    // TODO : hangman.opportunities가 0이 되면 실패메세지 보여주기
+    readMessageP.textContent = `게임이 끝났습니다! 단어는 ${hangman.word} 였습니다.`; // 메세지 변경하기
+    readMessageBg.style.display = 'grid'; // 모달 띄우기
+    readMessageBtn.addEventListener('click', () => {
+      readMessageBg.style.display = 'none'; // 모달 끄기
+      document.querySelector('#letterInput').value = ''; // input창 초기화
+      window.location.reload(); // 새로고침
+    });
   }
-  // TODO : 단어를 다 맞추게 되는 경우 성공메세지 보여주기
 };
 
 // Initialize app
