@@ -1,5 +1,8 @@
+import '../css/reset.css';
 import '../css/index.css';
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('index.js 업로드');
+  let readTitle = document.querySelector('h1');
+  let readMenu = document.querySelector('.menu');
+  let readMenuItem = document.querySelectorAll('.menuItem');
 });

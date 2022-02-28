@@ -7,8 +7,51 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <h1>고전게임</h1>
-    <a href="/public/tetris.html">테트리스</a>
-    <a href="/public/hangman.html">행맨</a>
+    <header>
+      <h1>고전게임</h1>
+    </header>
+    <main>
+      <ul class="menu">
+        <li class="menuItem">
+          <div class="menuItemTitle">
+            <div class="menuItemInfo">
+              <img src='/public/images/computerIcon.png' alt='windows95 아이콘'/>
+              <p>테트리스</p>
+            </div>
+            <div class="menuItemButtons">
+              <button>X</button>
+              <button>?</button>
+            </div>
+          </div>
+          <div class="menuItemText">
+            <p>테트리스 게임을 실행할까요?</p>
+            <a href="/public/tetris.html">OK</a>
+          </div>
+        </li>
+        <li class="menuItem">
+          <div class="menuItemTitle">
+            <div class="menuItemInfo">
+              <img src='/public/images/computerIcon.png' alt='windows95 아이콘'/>
+              <p>행맨</p>
+            </div>
+            <div class="menuItemButtons">
+              <button>X</button>
+              <button>?</button>
+            </div>
+          </div>
+          <div class="menuItemText">
+            <p>행맨 게임을 실행할까요?</p>
+            <a href="/public/hangman.html">OK</a>
+          </div>         
+        </li>
+      </ul>
+    </main>
+    <footer>
+      <div class="startButton">
+        <img src='/public/images/startIcon.png' alt='windows95 아이콘'/>
+        <button>Start</button>
+      </div>
+      <a href="https://github.com/Youngseo-kangg">youngseo.kangg's github</a>
+    </footer>
   </body>
 </html>
