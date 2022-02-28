@@ -1,3 +1,130 @@
 body {
-  background-color: lavender;
+  background: #008080;
+  display: grid;
+  grid-template-rows: 80px 1fr 23px;
+}
+/* hangman / #13 / index, hangman css 수정 */
+header {
+  display: grid;
+  place-items: center;
+}
+h1 {
+  font-size: 25px;
+  color: #fff;
+}
+
+.menu {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  min-height: 500px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  row-gap: 5px;
+  column-gap: 5px;
+  grid-auto-rows: 100px;
+}
+.menuItem {
+  width: 100%;
+  background: #c0c0c0;
+  border-width: 1px;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  border-style: solid;
+  padding: 1px;
+  display: grid;
+  grid-template-rows: 21px calc(100% - 21px);
+}
+.menuItem:nth-child(1) {
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
+.menuItem:nth-child(2) {
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
+.menuItemTitle {
+  display: flex;
+  justify-content: space-between;
+  background: #000080;
+}
+.menuItemInfo {
+  display: flex;
+  padding: 3px;
+}
+.menuItemInfo > img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+.menuItemInfo > p {
+  font-weight: bold;
+  font-size: 15px;
+  color: #fff;
+}
+.menuItemButtons {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 3px;
+  padding: 2px;
+}
+.menuItemButtons > button {
+  font-size: 15px;
+  background: #c0c0c0;
+  border-width: 1px;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  cursor: pointer;
+}
+
+.menuItemText {
+  display: grid;
+  grid-template-rows: 1fr 30px;
+  justify-items: center;
+}
+.menuItemText p {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menuItemText > a {
+  width: 15px;
+  height: 15px;
+  font-size: 11px;
+  outline: 1px solid #000000;
+  background: #c0c0c0;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+  padding: 4px 10px;
+}
+
+footer {
+  background: #c0c0c0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.startButton {
+  display: flex;
+  font-weight: bold;
+  font-size: 15px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #dfdfdf #4b4b4b #4b4b4b #dfdfdf;
+  background-color: transparent;
+  cursor: pointer;
+}
+.startButton > img {
+  display: block;
+  width: 15px;
+  height: 15px;
+}
+footer > a {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #dfdfdf #4b4b4b #4b4b4b #dfdfdf;
+  cursor: pointer;
 }

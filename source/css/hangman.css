@@ -4,13 +4,14 @@ body {
   min-width: 280px;
   min-height: 653px;
   display: grid;
-  grid-template-rows: 50px 1fr 50px;
+  grid-template-rows: 21px 1fr 50px;
+  background: #008080;
 }
 
 #beforeStart,
 #vocabError,
 #loadingIndicatorBg,
-#typeErrorBg {
+#messageBg {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -24,13 +25,13 @@ body {
 }
 
 #loadingIndicatorBg.none,
-#typeErrorBg.none {
+#messageBg.none {
   display: none;
 }
 
 #beforeStartMsg,
 #vocabErrorMsg,
-#typeError {
+#message {
   width: 250px;
   height: 150px;
   display: grid;
@@ -40,7 +41,8 @@ body {
   color: #fff;
 }
 
-#startBtn {
+#startBtn,
+#messageBtn {
   width: 100px;
   height: 30px;
   font-size: 14px;
@@ -64,9 +66,7 @@ main {
 header {
   display: grid;
   place-items: center;
-}
-h1 {
-  font-size: 25px;
+  background: #c0c0c0;
 }
 
 #hangmanDisplay {
@@ -197,7 +197,7 @@ h1 {
   margin-right: none;
 }
 
-.hangmanOtherBlock {
+.nonAlphabet {
   border: none;
   width: 30px;
   height: 30px;
