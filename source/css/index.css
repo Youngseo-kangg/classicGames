@@ -2,6 +2,10 @@ body {
   background: #008080;
   display: grid;
   grid-template-rows: 80px 1fr 23px;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 /* hangman / #13 / index, hangman css 수정 */
 header {
