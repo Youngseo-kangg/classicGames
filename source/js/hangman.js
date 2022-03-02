@@ -1,5 +1,7 @@
 import '../css/reset.css';
 import '../css/hangman.css';
+import computerIcon from '../images/computerIcon.png';
+import startIcon from '../images/computerIcon.png';
 
 const hangman = {};
 hangman.word = ''; //단어
@@ -16,23 +18,26 @@ hangman.errorMessage = '';
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
 hangman.start = () => {
   // TODO : 필요한 header, main, div 등 만들고 세팅
+  let wrapper = document.createElement('div');
+  wrapper.id = 'wrapper';
   let header = document.createElement('header');
   let main = document.createElement('main');
   let footer = document.createElement('footer');
-  document.body.append(header, main, footer);
+  wrapper.append(header, main);
+  document.body.append(wrapper, footer);
 
-  // TODO : landing indicator 만들기
-  let loadingIndicatorBg = document.createElement('article');
-  loadingIndicatorBg.id = 'loadingIndicatorBg';
-  let loadingIndicator = document.createElement('div');
-  loadingIndicator.classList.add('lds-ellipsis');
-  for (let i = 0; i < 4; i++) {
-    let loadingDots = document.createElement('div');
-    loadingIndicator.append(loadingDots);
-  }
-  loadingIndicatorBg.classList.add('none');
-  loadingIndicatorBg.append(loadingIndicator);
-  document.body.append(loadingIndicatorBg);
+  // TODO : footer만들기
+  let startButton = document.createElement('div');
+  startButton.classList.add('startButton');
+  let startButtonImg = document.createElement('img');
+  startButtonImg.setAttribute('src', startIcon);
+  let startButtonBtn = document.createElement('button');
+  startButtonBtn.textContent = 'Start';
+  let openItem = document.createElement('a');
+  openItem.setAttribute('href', 'https://github.com/Youngseo-kangg');
+  openItem.textContent = `youngseo.kangg's github`;
+  startButton.append(startButtonImg, startButtonBtn);
+  footer.append(startButton, openItem);
 
   // TODO : 메세지 창 만들어주기
   let messageBg = document.createElement('article');
@@ -52,30 +57,24 @@ hangman.start = () => {
   messageBg.append(message);
   document.body.append(messageBg);
 
-  // TODO : 처음 접속했을때 띄울 안내 article 만들고 세팅
-  let article = document.createElement('article'); // 시작버튼 누르기 전 창으로 작동할 태그
-  article.id = 'beforeStart';
-  let articleDiv = document.createElement('div');
-  articleDiv.id = 'beforeStartMsg';
-  let articleP = document.createElement('p');
-  articleP.textContent = '행맨 게임에 오신것을 환영합니다!';
-  let articleBtn = document.createElement('button'); // 이 버튼을 누르면 article꺼짐
-  articleBtn.id = 'startBtn';
-  articleBtn.textContent = '게임 시작하기';
-  // TODO : articleBtn 버튼 눌렀을 때 article 사라지는 함수 구현
-  articleBtn.addEventListener('click', () => {
-    article.style.display = 'none';
-    hangman.displayQuestion();
-  });
-  // 세팅하기
-  articleDiv.append(articleP, articleBtn);
-  article.append(articleDiv);
-  document.body.append(article);
-
   // TODO : Header안에 h1태그, 제목, 클래스 주기
   let h1 = document.createElement('h1');
   h1.textContent = '행맨 게임';
-  document.querySelector('header').appendChild(h1);
+  let menuItemTitle = document.createElement('div');
+  menuItemTitle.classList.add('menuItemTitle');
+  let menuItemInfo = document.createElement('div');
+  menuItemInfo.classList.add('menuItemInfo');
+  let menuItemInfoImg = document.createElement('img');
+  menuItemInfoImg.setAttribute('src', computerIcon);
+  menuItemInfoImg.setAttribute('alt', 'windows95 아이콘');
+  let menuItemButton = document.createElement('button');
+  menuItemButton.classList.add('menuItemButton');
+  menuItemButton.textContent = 'X';
+  menuItemButton.addEventListener('click', () => {
+    window.location.replace('index.html'); // 메인 화면으로 다시
+  });
+  menuItemInfo.append(menuItemInfoImg, h1);
+  document.querySelector('header').append(menuItemInfo, menuItemButton);
 
   // TODO : main 안에 행맨 이미지, 입력창, 점수 나타낼 div 만들고 main에 세팅
   let mainComponents = [
@@ -137,7 +136,6 @@ hangman.start = () => {
   });
   let readHangmanInputWrapper = document.querySelector('.hangmanInputWrapper');
   alphabetInput.setAttribute('type', 'text'); // text속성 주기
-  alphabetInput.setAttribute('placeholder', 'Letter'); // text속성 주기
   readHangmanInputWrapper.append(alphabetInput);
 
   // TODO : 알파벳 입력 버튼 만들기
@@ -191,12 +189,12 @@ hangman.start = () => {
 
   // TODO: DOMContentLoaded확인하기
   console.log('hangman.js DOMContentLoaded');
+  hangman.displayQuestion();
 };
 
 hangman.displayQuestion = function () {
   // TODO : loading indicator 켜기
-  let loadingIndicatorBg = document.querySelector('#loadingIndicatorBg');
-  loadingIndicatorBg.classList.remove('none');
+  document.querySelector('header').classList.remove('ready');
   // TODO : 단어 초기화
   hangman.word = ''; //단어
   hangman.definition = 'no hint, good luck!'; // 단어 정의
@@ -206,6 +204,11 @@ hangman.displayQuestion = function () {
   hangman.lives = 6; // 입력 기회
   hangman.spelling = []; // 단어 스펠링
   hangman.userGuess = []; // 유저가 입력한 내용
+
+  document.querySelector('#definitionText').textContent = 'no hint, good luck!';
+  document.querySelector('#partOfSpeechText').textContent =
+    'no hint, good luck!';
+  document.querySelector('#typeOfText').textContent = 'no hint, good luck!';
   // TODO : 랜덤한 단어 요청하기
   fetch(
     'https://wordsapiv1.p.rapidapi.com/words/?random=true&lettersMin=1&lettersMax=10',
@@ -285,7 +288,7 @@ hangman.displayQuestion = function () {
         })
         .then(() => {
           // TODO : loading indicator 끄기
-          loadingIndicatorBg.classList.add('none');
+          document.querySelector('header').classList.add('ready');
         });
     })
     .catch((err) => {
