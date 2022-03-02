@@ -7,7 +7,7 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-/* hangman / #13 / index, hangman css 수정 */
+
 header {
   display: grid;
   place-items: center;

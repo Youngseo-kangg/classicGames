@@ -1,5 +1,7 @@
 import '../css/reset.css';
 import '../css/hangman.css';
+import computerIcon from '../images/computerIcon.png';
+import startIcon from '../images/computerIcon.png';
 
 const hangman = {};
 hangman.word = ''; //단어
@@ -28,7 +30,7 @@ hangman.start = () => {
   let startButton = document.createElement('div');
   startButton.classList.add('startButton');
   let startButtonImg = document.createElement('img');
-  startButtonImg.setAttribute('src', '/public/images/startIcon.png');
+  startButtonImg.setAttribute('src', startIcon);
   let startButtonBtn = document.createElement('button');
   startButtonBtn.textContent = 'Start';
   let openItem = document.createElement('a');
@@ -36,19 +38,6 @@ hangman.start = () => {
   openItem.textContent = `youngseo.kangg's github`;
   startButton.append(startButtonImg, startButtonBtn);
   footer.append(startButton, openItem);
-
-  // TODO : landing indicator 만들기
-  let loadingIndicatorBg = document.createElement('article');
-  loadingIndicatorBg.id = 'loadingIndicatorBg';
-  let loadingIndicator = document.createElement('div');
-  loadingIndicator.classList.add('lds-ellipsis');
-  for (let i = 0; i < 4; i++) {
-    let loadingDots = document.createElement('div');
-    loadingIndicator.append(loadingDots);
-  }
-  loadingIndicatorBg.classList.add('none');
-  loadingIndicatorBg.append(loadingIndicator);
-  document.body.append(loadingIndicatorBg);
 
   // TODO : 메세지 창 만들어주기
   let messageBg = document.createElement('article');
@@ -76,7 +65,7 @@ hangman.start = () => {
   let menuItemInfo = document.createElement('div');
   menuItemInfo.classList.add('menuItemInfo');
   let menuItemInfoImg = document.createElement('img');
-  menuItemInfoImg.setAttribute('src', '/public/images/computerIcon.png');
+  menuItemInfoImg.setAttribute('src', computerIcon);
   menuItemInfoImg.setAttribute('alt', 'windows95 아이콘');
   let menuItemButton = document.createElement('button');
   menuItemButton.classList.add('menuItemButton');
@@ -147,7 +136,6 @@ hangman.start = () => {
   });
   let readHangmanInputWrapper = document.querySelector('.hangmanInputWrapper');
   alphabetInput.setAttribute('type', 'text'); // text속성 주기
-  alphabetInput.setAttribute('placeholder', 'Letter'); // text속성 주기
   readHangmanInputWrapper.append(alphabetInput);
 
   // TODO : 알파벳 입력 버튼 만들기
@@ -206,8 +194,7 @@ hangman.start = () => {
 
 hangman.displayQuestion = function () {
   // TODO : loading indicator 켜기
-  let loadingIndicatorBg = document.querySelector('#loadingIndicatorBg');
-  loadingIndicatorBg.classList.remove('none');
+  document.querySelector('header').classList.remove('ready');
   // TODO : 단어 초기화
   hangman.word = ''; //단어
   hangman.definition = 'no hint, good luck!'; // 단어 정의
@@ -217,6 +204,11 @@ hangman.displayQuestion = function () {
   hangman.lives = 6; // 입력 기회
   hangman.spelling = []; // 단어 스펠링
   hangman.userGuess = []; // 유저가 입력한 내용
+
+  document.querySelector('#definitionText').textContent = 'no hint, good luck!';
+  document.querySelector('#partOfSpeechText').textContent =
+    'no hint, good luck!';
+  document.querySelector('#typeOfText').textContent = 'no hint, good luck!';
   // TODO : 랜덤한 단어 요청하기
   fetch(
     'https://wordsapiv1.p.rapidapi.com/words/?random=true&lettersMin=1&lettersMax=10',
@@ -296,7 +288,7 @@ hangman.displayQuestion = function () {
         })
         .then(() => {
           // TODO : loading indicator 끄기
-          loadingIndicatorBg.classList.add('none');
+          document.querySelector('header').classList.add('ready');
         });
     })
     .catch((err) => {
