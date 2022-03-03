@@ -2,6 +2,7 @@ import '../css/reset.css';
 import '../css/tetris.css';
 import computerIcon from '../images/computerIcon.png';
 import startIcon from '../images/computerIcon.png';
+import circleBackground from '../images/circleBackground.jpeg';
 
 document.addEventListener('DOMContentLoaded', () => {
   // TODO : 화면 창 만들어 주기
@@ -9,13 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
   wrapper.id = 'wrapper';
   let header = document.createElement('header');
   let main = document.createElement('main');
+  main.style.background = `url(${circleBackground})`;
   let footer = document.createElement('footer');
   wrapper.append(header, main);
   document.body.append(wrapper, footer);
 
   // * header 만들기
   let h1 = document.createElement('h1');
-  h1.textContent = '행맨 게임';
+  h1.textContent = '테트리스';
   let menuItemTitle = document.createElement('div');
   menuItemTitle.classList.add('menuItemTitle');
   let menuItemInfo = document.createElement('div');
@@ -32,7 +34,32 @@ document.addEventListener('DOMContentLoaded', () => {
   menuItemInfo.append(menuItemInfoImg, h1);
   document.querySelector('header').append(menuItemInfo, menuItemButton);
 
-  // TODO : 점수 창, 게임 화면 만들어주기
+  // TODO : 게임 canvas 만들기
+  let readMain = document.querySelector('main');
+  let tetrisScreenWrapper = document.createElement('div');
+  tetrisScreenWrapper.id = 'tetrisScreenWrapper';
+  let tetrisScreen = document.createElement('canvas');
+  tetrisScreen.id = 'tetrisScreen';
+  tetrisScreenWrapper.append(tetrisScreen);
+
+  // TODO : 정보창(점수, 시작/멈춤버튼, 리셋버튼) 만들기
+  let gameInfoWrapper = document.createElement('div');
+  gameInfoWrapper.id = 'gameInfoWrapper';
+  let gameInfo = document.createElement('div');
+  gameInfo.id = 'gameInfo';
+  let gameScore = document.createElement('div');
+  gameScore.textContent = `Score : 0`;
+  let gameTitle = document.createElement('p');
+  gameInfo.append(gameTitle, gameScore);
+  gameTitle.textContent = 'Tetris';
+  let gameInfoButtons = ['gameStatus', 'gameReset'];
+  for (let i = 0; i < gameInfoButtons.length; i++) {
+    let gameInfoButton = document.createElement('button');
+    gameInfoButton.textContent = gameInfoButtons[i];
+    gameInfo.appendChild(gameInfoButton);
+  }
+  gameInfoWrapper.append(gameInfo);
+  readMain.append(gameInfoWrapper, tetrisScreenWrapper);
 
   // * footer만들기
   let startButton = document.createElement('div');
