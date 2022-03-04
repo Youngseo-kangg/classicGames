@@ -19,6 +19,7 @@ body {
   background-color: #eee;
   box-sizing: border-box;
   width: auto;
+  box-sizing: border-box;
 }
 
 header {
@@ -68,12 +69,14 @@ button {
 }
 
 #tetrisScreen {
-  width: 200px;
+  width: 300px;
   height: 600px;
   background-color: #000;
 }
-#tetrisScreen {
-  background-color: #000;
+@media (max-width: 450px) {
+  #tetrisScreen {
+    width: 100%;
+  }
 }
 #gameInfoWrapper {
   width: 100%;

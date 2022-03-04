@@ -38,9 +38,90 @@ document.addEventListener('DOMContentLoaded', () => {
   let readMain = document.querySelector('main');
   let tetrisScreenWrapper = document.createElement('div');
   tetrisScreenWrapper.id = 'tetrisScreenWrapper';
-  let tetrisScreen = document.createElement('canvas');
-  tetrisScreen.id = 'tetrisScreen';
-  tetrisScreenWrapper.append(tetrisScreen);
+
+  let gBArrayHeight = 20; // 열 갯수
+  let gBArrayWidth = 12; // 행 갯수
+  let startX = 4; // 시작하는 부분의 x좌표
+  let startY = 0; // 시작하는 부분의 y좌표
+  let coordinateArray = [...Array(gBArrayHeight)].map((e) =>
+    Array(gBArrayWidth).fill(0)
+  );
+  let curTetromiino = [
+    [1, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1],
+  ];
+  let tetrominos = [];
+  let tetrominoColor = [
+    'purple',
+    'cyan',
+    'blue',
+    'yellow',
+    'orange',
+    'green',
+    'red',
+  ];
+  let curTetrominoColor;
+  let gameBoardArray = [...Array(gBArrayHeight)].map((e) =>
+    Array(gBArrayWidth).fill(0)
+  );
+  let directions = {
+    IDLE: 0,
+    DOWN: 1,
+    LEFT: 2,
+    RIGHT: 3,
+  };
+  let direction;
+
+  class Coordinates {
+    constructor(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  }
+  function createCoordArray() {
+    let i = 0,
+      j = 0;
+    for (let y = 9; y <= 446; y += 23) {
+      for (let x = 11; x <= 264; x += 23) {
+        coordinateArray[i][j] = new Coordinates(x, y);
+        i++;
+      }
+      j++;
+      i = 0;
+    }
+  }
+
+  function setupCanvas() {
+    let tetrisCanvas = document.createElement('canvas');
+    tetrisCanvas.id = 'tetrisScreen';
+    tetrisScreenWrapper.append(tetrisCanvas);
+    let ctx = tetrisCanvas.getContext('2d');
+    ctx.scale(2, 2);
+    // 배경채우기
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 300, 600);
+    // 배경 내부 창 보더 검정색으로
+    ctx.strokeStyle = 'black';
+    ctx.strokeRect(1, 1, 140, 70);
+
+    function drawTetromino() {
+      for (let i = 0; i < curTetromiino.length; i++) {
+        let x = curTetromiino[i][0] + startX;
+        let y = curTetromiino[i][1] + startY;
+        gameBoardArray[x][y] = 1;
+        let coordX = coordinateArray[x][y].x;
+        let coordY = coordinateArray[x][y].y;
+        ctx.fillStyle = curTetromiino;
+        ctx.fillRect(coordX, coordY, 21, 21);
+      }
+    }
+
+    createCoordArray();
+    drawTetromino();
+  }
+  setupCanvas();
 
   // TODO : 정보창(점수, 시작/멈춤버튼, 리셋버튼) 만들기
   let gameInfoWrapper = document.createElement('div');
