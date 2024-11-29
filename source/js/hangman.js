@@ -209,6 +209,7 @@ hangman.displayQuestion = function () {
   document.querySelector('#partOfSpeechText').textContent =
     'no hint, good luck!';
   document.querySelector('#typeOfText').textContent = 'no hint, good luck!';
+
   // TODO : 랜덤한 단어 요청하기
   fetch(
     'https://wordsapiv1.p.rapidapi.com/words/?random=true&lettersMin=1&lettersMax=10',
