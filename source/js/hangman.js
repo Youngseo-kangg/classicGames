@@ -1,7 +1,7 @@
 import '../css/reset.css';
 import '../css/hangman.css';
-import computerIcon from '../images/computerIcon.png';
-import startIcon from '../images/computerIcon.png';
+
+import { Initializer } from './common';
 
 const hangman = {};
 hangman.word = ''; //단어
@@ -16,65 +16,10 @@ hangman.errorTitle = '';
 hangman.errorMessage = '';
 
 // 초기 HTML 문서를 완전히 불러오고 분석했을 때 발생 + 스타일 시트, 이미지, 하위 프레임의 로딩은 기다리지 않음
-hangman.start = () => {
-  // TODO : 필요한 header, main, div 등 만들고 세팅
-  let wrapper = document.createElement('div');
-  wrapper.id = 'wrapper';
-  let header = document.createElement('header');
-  let main = document.createElement('main');
-  let footer = document.createElement('footer');
-  wrapper.append(header, main);
-  document.body.append(wrapper, footer);
-
-  // TODO : footer만들기
-  let startButton = document.createElement('div');
-  startButton.classList.add('startButton');
-  let startButtonImg = document.createElement('img');
-  startButtonImg.setAttribute('src', startIcon);
-  let startButtonBtn = document.createElement('button');
-  startButtonBtn.textContent = 'Start';
-  let openItem = document.createElement('a');
-  openItem.setAttribute('href', 'https://github.com/Youngseo-kangg');
-  openItem.textContent = `youngseo.kangg's github`;
-  startButton.append(startButtonImg, startButtonBtn);
-  footer.append(startButton, openItem);
-
-  // TODO : 메세지 창 만들어주기
-  let messageBg = document.createElement('article');
-  messageBg.id = 'messageBg';
-  let message = document.createElement('div');
-  message.id = 'message';
-  let messageP = document.createElement('p');
-  messageP.id = 'messageP';
-  let messageBtn = document.createElement('button');
-  messageBtn.id = 'messageBtn';
-  messageBtn.textContent = '닫기';
-  messageBtn.addEventListener('click', () => {
-    messageBg.style.display = 'none';
-  }); // 이 버튼을 누르면 article꺼짐
-  messageBg.style.display = 'none';
-  message.append(messageP, messageBtn);
-  messageBg.append(message);
-  document.body.append(messageBg);
-
-  // TODO : Header안에 h1태그, 제목, 클래스 주기
-  let h1 = document.createElement('h1');
-  h1.textContent = '행맨 게임';
-  let menuItemTitle = document.createElement('div');
-  menuItemTitle.classList.add('menuItemTitle');
-  let menuItemInfo = document.createElement('div');
-  menuItemInfo.classList.add('menuItemInfo');
-  let menuItemInfoImg = document.createElement('img');
-  menuItemInfoImg.setAttribute('src', computerIcon);
-  menuItemInfoImg.setAttribute('alt', 'windows95 아이콘');
-  let menuItemButton = document.createElement('button');
-  menuItemButton.classList.add('menuItemButton');
-  menuItemButton.textContent = 'X';
-  menuItemButton.addEventListener('click', () => {
-    window.location.replace('index.html'); // 메인 화면으로 다시
-  });
-  menuItemInfo.append(menuItemInfoImg, h1);
-  document.querySelector('header').append(menuItemInfo, menuItemButton);
+hangman.start = async () => {
+  await Initializer.start();
+  await Initializer.createMsg();
+  await Initializer.createHeader('행멘 게임');
 
   // TODO : main 안에 행맨 이미지, 입력창, 점수 나타낼 div 만들고 main에 세팅
   let mainComponents = [
